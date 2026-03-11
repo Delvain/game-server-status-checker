@@ -44,6 +44,7 @@ async function updateChannelName(newName) {
 }
 
 app.post('/kuma', async (req, res) => {
+	console.log('Kuma webhook received:', req.body)
 	try {
 		const name = getChannelName(req.body)
 		await updateChannelName(name)
