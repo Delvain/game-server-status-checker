@@ -9,7 +9,10 @@ const CHANNEL_ID = process.env.CHANNEL_ID
 
 const DISCORD_API = 'https://discord.com/api/v10'
 
-const getChannelName = (status) => `enshrouded${status === 'UP' ? '🟢' : '🔴'}`
+const getChannelName = (status) => {
+	const indicator = status === 'UP' ? '🟢' : status === 'DOWN' ? '🔴' : ''
+	return `enshrouded${indicator}`
+}
 
 async function getCurrentChannelName() {
 	const res = await fetch(`${DISCORD_API}/channels/${CHANNEL_ID}`, {
