@@ -2,15 +2,14 @@ import express from 'express'
 import fetch from 'node-fetch'
 
 const app = express()
-app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 
 const TOKEN = process.env.DISCORD_TOKEN
 const CHANNEL_ID = process.env.CHANNEL_ID
 
 const DISCORD_API = 'https://discord.com/api/v10'
 
-const getChannelName = (data) =>
-	`enshrouded-${data.status === 'UP' ? '🟢' : '🔴'}`
+const getChannelName = (status) => `enshrouded${status === 'UP' ? '🟢' : '🔴'}`
 
 async function getCurrentChannelName() {
 	const res = await fetch(`${DISCORD_API}/channels/${CHANNEL_ID}`, {
@@ -46,7 +45,8 @@ async function updateChannelName(newName) {
 app.post('/kuma', async (req, res) => {
 	console.log('Kuma webhook received:', req.body)
 	try {
-		const name = getChannelName(req.body)
+		const status = req.body.status
+		const name = getChannelName(status)
 		await updateChannelName(name)
 	} catch (err) {
 		console.error('Error updating channel:', err)
