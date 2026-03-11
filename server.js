@@ -11,9 +11,9 @@ function getChannelName(data) {
 	if (data.status === 'UP') {
 		const players = data.players ?? '?'
 		const max = data.maxplayers ?? '?'
-		return `🟢 Enshrouded [${players}/${max}]`
+		return 'enshrouded-🟢'
 	}
-	return '🔴 Enshrouded [Offline]'
+	return 'enshrouded-🔴'
 }
 
 app.post('/kuma', async (req, res) => {
