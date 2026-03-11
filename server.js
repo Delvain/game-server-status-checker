@@ -14,34 +14,14 @@ const getChannelName = (status) => {
 	return `enshrouded${indicator}`
 }
 
-async function getCurrentChannelName() {
-	const res = await fetch(`${DISCORD_API}/channels/${CHANNEL_ID}`, {
-		headers: {
-			Authorization: `Bot ${TOKEN}`,
-		},
-	})
-
-	const data = await res.json()
-	return data.name
-}
-
-async function updateChannelName(newName) {
-	const currentName = await getCurrentChannelName()
-
-	if (currentName === newName) {
-		console.log('No change needed:', newName)
-		return
-	}
-
-	console.log(`Renaming channel: ${currentName} → ${newName}`)
-
+async function updateChannelName(status) {
 	await fetch(`${DISCORD_API}/channels/${CHANNEL_ID}`, {
 		method: 'PATCH',
 		headers: {
 			Authorization: `Bot ${TOKEN}`,
 			'Content-Type': 'application/json',
 		},
-		body: JSON.stringify({ name: newName }),
+		body: JSON.stringify({ name: getChannelName(status) }),
 	})
 }
 
