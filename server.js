@@ -10,7 +10,7 @@ const CHANNEL_ID = process.env.CHANNEL_ID
 const DISCORD_API = 'https://discord.com/api/v10'
 
 const getChannelName = (status) => {
-	const indicator = status === 'UP' ? '🟢' : status === 'DOWN' ? '🔴' : ''
+	const indicator = /Up/.test(status) ? '🟢' : /Down/.test(status) ? '🔴' : ''
 	return `enshrouded${indicator}`
 }
 
@@ -28,9 +28,7 @@ async function updateChannelName(status) {
 app.post('/kuma', async (req, res) => {
 	console.log('Kuma webhook received:', req.body)
 	try {
-		const status = req.body.status
-		const name = getChannelName(status)
-		await updateChannelName(name)
+		await updateChannelName(req.body.status)
 	} catch (err) {
 		console.error('Error updating channel:', err)
 	}
